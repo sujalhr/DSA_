@@ -1,0 +1,38 @@
+#include <stdio.h>
+
+void replace(char *str, char *pat, char *rep) {
+    char res[100];
+    int i = 0, j = 0, found = 0;
+    
+    while (str[i]) {
+        int k;
+        for (k = 0; pat[k] && str[i + k] == pat[k]; k++);
+        
+        if (!pat[k]) {
+            for (k = 0; rep[k]; k++) res[j++] = rep[k];
+            i += k;
+            found = 1;
+        } else {
+            res[j++] = str[i++];
+        }
+    }
+    res[j] = '\0';
+    
+    printf("\nResult: %s\n", found ? res : "Pattern not found");
+}
+
+int main() {
+    char str[100], pat[20], rep[20];
+    
+    printf("Enter main string: ");
+    scanf("%s", str);
+    printf("Enter pattern string: ");
+    scanf("%s", pat);
+    printf("Enter replace string: ");
+    scanf("%s", rep);
+    
+    printf("\nOriginal: %s\n", str);
+    replace(str, pat, rep);
+    
+    return 0;
+}
