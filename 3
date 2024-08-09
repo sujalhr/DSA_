@@ -1,0 +1,96 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+
+#define MAX 100
+
+int stack[MAX], top = -1;
+
+void push(int x) {
+    if (top < MAX - 1) {
+        stack[++top] = x;
+        printf("Pushed: %d\n", x);
+    } else {
+        printf("Stack Overflow! Cannot push %d\n", x);
+    }
+}
+
+int pop() {
+    if (top >= 0) {
+        return stack[top--];
+    } else {
+        printf("Stack Underflow! Cannot pop from an empty stack\n");
+        return -1;
+    }
+}
+
+bool isPalindrome() {
+    if (top == -1) {
+        printf("Stack is empty. Cannot check palindrome.\n");
+        return false;
+    }
+    for (int i = 0; i <= top / 2; i++)
+        if (stack[i] != stack[top - i])
+            return false;
+    return true;
+}
+
+void display() {
+    if (top == -1) {
+        printf("Stack is empty\n");
+    } else {
+        printf("Stack elements: ");
+        for (int i = 0; i <= top; i++)
+            printf("%d ", stack[i]);
+        printf("\n");
+    }
+}
+
+void displayStatus() {
+    printf("Stack status:\n");
+    printf("Size: %d\n", top + 1);
+    printf("Capacity: %d\n", MAX);
+    printf("Is Full: %s\n", (top == MAX - 1) ? "Yes" : "No");
+    printf("Is Empty: %s\n", (top == -1) ? "Yes" : "No");
+}
+
+int main() {
+    int choice, x;
+    while (1) {
+        printf("\nStack Operations:\n");
+        printf("1. Push an Element\n");
+        printf("2. Pop an Element\n");
+        printf("3. Check Palindrome\n");
+        printf("4. Display Stack\n");
+        printf("5. Display Stack Status\n");
+        printf("6. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter element to push: ");
+                scanf("%d", &x);
+                push(x);
+                break;
+            case 2:
+                x = pop();
+                if (x != -1) printf("Popped: %d\n", x);
+                break;
+            case 3:
+                printf(isPalindrome() ? "Stack is a Palindrome\n" : "Stack is not a Palindrome\n");
+                break;
+            case 4:
+                display();
+                break;
+            case 5:
+                displayStatus();
+                break;
+            case 6:
+                printf("Exiting program. Goodbye!\n");
+                exit(0);
+            default:
+                printf("Invalid choice! Please try again.\n");
+        }
+    }
+}
