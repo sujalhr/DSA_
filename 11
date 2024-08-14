@@ -1,0 +1,50 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define MAX 20
+
+int a[MAX][MAX], q[MAX], visited[MAX], n, f = 0, r = 0;
+
+void bfs(int v) {
+    visited[v] = 1;
+    q[r++] = v;
+    printf("Nodes reachable from %d: ", v);
+    while (f < r) {
+        v = q[f++];
+        printf("%d ", v);
+        for (int i = 1; i <= n; i++)
+            if (a[v][i] && !visited[i])
+                q[r++] = visited[i] = 1;
+    }
+    printf("\n");
+}
+
+void create_graph() {
+    printf("Enter the number of vertices: ");
+    scanf("%d", &n);
+    printf("Enter the adjacency matrix:\n");
+    for (int i = 1; i <= n; i++) {
+        visited[i] = 0;
+        for (int j = 1; j <= n; j++)
+            scanf("%d", &a[i][j]);
+    }
+}
+
+int main() {
+    int v, ch;
+    do {
+        printf("\n1. Create Graph\n2. BFS\nEnter your choice: ");
+        scanf("%d", &ch);
+        switch (ch) {
+            case 1: create_graph(); break;
+            case 2:
+                printf("Enter the starting vertex: ");
+                scanf("%d", &v);
+                if (v < 1 || v > n) printf("Invalid starting vertex\n");
+                else bfs(v);
+                break;
+            default: printf("Invalid choice\n");
+        }
+    } while (ch <= 2);
+    return 0;
+}
