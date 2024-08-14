@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node {
+    char ssn[10], name[20], dept[10], desg[10], sal[10], phno[11];
+    struct node *llink, *rlink;
+} NODE;
+
+NODE *first = NULL;
+
+void insert_end() {
+    NODE *nn = (NODE*)malloc(sizeof(NODE));
+    printf("Enter SSN, Name, Dept, Designation, Salary, Phone: ");
+    scanf("%s %s %s %s %s %s", nn->ssn, nn->name, nn->dept, nn->desg, nn->sal, nn->phno);
+    nn->rlink = NULL;
+    if (!first) {
+        nn->llink = NULL;
+        first = nn;
+    } else {
+        NODE *temp = first;
+        while (temp->rlink) temp = temp->rlink;
+        temp->rlink = nn;
+        nn->llink = temp;
+    }
+}
+
+void insert_front() {
+    NODE *nn = (NODE*)malloc(sizeof(NODE));
+    printf("Enter SSN, Name, Dept, Designation, Salary, Phone: ");
+    scanf("%s %s %s %s %s %s", nn->ssn, nn->name, nn->dept, nn->desg, nn->sal, nn->phno);
+    nn->llink = NULL;
+    nn->rlink = first;
+    if (first) first->llink = nn;
+    first = nn;
+}
+
+void delete_front() {
+    if (!first) {
+        printf("List is empty\n");
+        return;
+    }
+    NODE *temp = first;
+    first = first->rlink;
+    if (first) first->llink = NULL;
+    free(temp);
+}
+
+void delete_end() {
+    if (!first) {
+        printf("List is empty\n");
+        return;
+    }
+    if (!first->rlink) {
+        free(first);
+        first = NULL;
+        return;
+    }
+    NODE *temp = first;
+    while (temp->rlink) temp = temp->rlink;
+    temp->llink->rlink = NULL;
+    free(temp);
+}
+
+void display() {
+    NODE *temp = first;
+    while (temp) {
+        printf("%s %s %s %s %s %s\n", temp->ssn, temp->name, temp->dept, temp->desg, temp->sal, temp->phno);
+        temp = temp->rlink;
+    }
+}
+
+int main() {
+    int choice;
+    do {
+        printf("\n1. Insert End 2. Insert Front 3. Delete End 4. Delete Front 5. Display 6. Exit\nEnter choice: ");
+        scanf("%d", &choice);
+        switch(choice) {
+            case 1: insert_end(); break;
+            case 2: insert_front(); break;
+            case 3: delete_end(); break;
+            case 4: delete_front(); break;
+            case 5: display(); break;
+            case 6: printf("Exiting\n"); break;
+            default: printf("Invalid choice\n");
+        }
+    } while (choice != 6);
+    return 0;
+}
