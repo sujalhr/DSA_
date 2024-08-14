@@ -1,81 +1,61 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
 
 #define MAX 5
 
-void insert(int);
-int delete(void);
-void display(void);
+int cq[MAX];
+int front = 0, rear = -1, count = 0;
 
-int a[MAX], f = 0, r = -1, count = 0;
+void insert() {
+    if (count == MAX) {
+        printf("Circular Queue Overflow\n");
+        return;
+    }
+    int element;
+    printf("Enter the value: ");
+    scanf("%d", &element);
+    rear = (rear + 1) % MAX;
+    cq[rear] = element;
+    count++;
+}
+
+void delete_ele() {
+    if (count == 0) {
+        printf("Circular Queue Underflow\n");
+        return;
+    }
+    printf("Element deleted is %d\n", cq[front]);
+    front = (front + 1) % MAX;
+    count--;
+}
+
+void display() {
+    if (count == 0) {
+        printf("Circular Queue is empty\n");
+        return;
+    }
+    printf("Contents of Circular Queue are:\n");
+    int i, index = front;
+    for (i = 0; i < count; i++) {
+        printf("%d ", cq[index]);
+        index = (index + 1) % MAX;
+    }
+    printf("\n");
+}
 
 int main() {
-    int ch, item, itemdel;
-    
-    printf("Queue Operations Demo");
-    
-    while (1) {
-        printf("\nEnter Your Choice: ");
-        printf("1. Insert\t2. Delete\t3. Display\t4. Exit\n");
-        scanf("%d", &ch);
+    int choice;
+    do {
+        printf("\n1: Insert\n2: Delete\n3: Display\n4: Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
 
-        switch (ch) {
-            case 1:
-                printf("Enter the item: ");
-                scanf("%d", &item);
-                insert(item);
-                break;
-            case 2:
-                itemdel = delete();
-                if (itemdel)
-                    printf("The deleted item is %d\n", itemdel);
-                else
-                    printf("Queue underflow\n");
-                break;
-            case 3:
-                display();
-                break;
-            case 4:
-                exit(0);
+        switch (choice) {
+            case 1: insert(); break;
+            case 2: delete_ele(); break;
+            case 3: display(); break;
+            case 4: printf("Exiting program\n"); break;
+            default: printf("Invalid choice\n");
         }
-    }
-
+    } while (choice != 4);
     return 0;
-}
-
-void insert(int item) {
-    if (count == MAX)
-        printf("Queue Overflow\n");
-    else {
-        r = (r + 1) % MAX;
-        a[r] = item;
-        count++;
-    }
-}
-
-int delete(void) {
-    int itemdel;
-    if (count == 0)
-        return 0;
-    else {
-        itemdel = a[f];
-        f = (f + 1) % MAX;
-        count--;
-
-        return (itemdel);
-    }
-}
-
-void display(void) {
-    int i, j;
-    if (count == 0)
-        printf("Queue empty\n");
-    else {
-        i = f;
-        for (j = 1; j <= count; j++) {
-            printf("%d\t", a[i]);
-            i = (i + 1) % MAX;
-        }
-        printf("\n");
-    }
 }
