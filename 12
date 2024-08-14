@@ -1,0 +1,62 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+#define SIZE 10
+
+int hash(int key) {
+    return key % SIZE;
+}
+
+void insert(int table[], int key) {
+    int index = hash(key);
+    int i = 0;
+    while (table[(index + i) % SIZE] != -1) {
+        if (i == SIZE) {
+            printf("Hash table is full\n");
+            return;
+        }
+        i++;
+    }
+    table[(index + i) % SIZE] = key;
+    printf("Inserted %d at index %d\n", key, (index + i) % SIZE);
+}
+
+void display(int table[]) {
+    printf("Hash Table:\n");
+    for (int i = 0; i < SIZE; i++) {
+        if (table[i] != -1) {
+            printf("%d: %d\n", i, table[i]);
+        } else {
+            printf("%d: Empty\n", i);
+        }
+    }
+}
+
+int main() {
+    int table[SIZE];
+    for (int i = 0; i < SIZE; i++) {
+        table[i] = -1;
+    }
+
+    int choice, key;
+    do {
+        printf("\n1. Insert\n2. Display\n3. Exit\nEnter choice: ");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1:
+                printf("Enter key to insert: ");
+                scanf("%d", &key);
+                insert(table, key);
+                break;
+            case 2:
+                display(table);
+                break;
+            case 3:
+                exit(0);
+            default:
+                printf("Invalid choice\n");
+        }
+    } while (1);
+
+    return 0;
+}
