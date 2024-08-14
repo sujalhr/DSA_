@@ -1,0 +1,54 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node {
+    char usn[11], name[20], sem[10], branch[10], phno[10];
+    struct node *link;
+} NODE;
+
+NODE *first = NULL;
+
+void insert_front() {
+    NODE *nn = (NODE*)malloc(sizeof(NODE));
+    printf("Enter USN, Name, Branch, Sem, Phone: ");
+    scanf("%s %s %s %s %s", nn->usn, nn->name, nn->branch, nn->sem, nn->phno);
+    nn->link = first;
+    first = nn;
+}
+
+void delete_front() {
+    if (first == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+    NODE *temp = first;
+    first = first->link;
+    free(temp);
+}
+
+void display() {
+    int count = 0;
+    NODE *temp = first;
+    while (temp != NULL) {
+        printf("%s %s %s %s %s\n", temp->usn, temp->name, temp->branch, temp->sem, temp->phno);
+        temp = temp->link;
+        count++;
+    }
+    printf("Number of nodes: %d\n", count);
+}
+
+int main() {
+    int choice;
+    do {
+        printf("\n1. Insert 2. Delete 3. Display 4. Exit\nEnter choice: ");
+        scanf("%d", &choice);
+        switch(choice) {
+            case 1: insert_front(); break;
+            case 2: delete_front(); break;
+            case 3: display(); break;
+            case 4: printf("Exiting\n"); break;
+            default: printf("Invalid choice\n");
+        }
+    } while (choice != 4);
+    return 0;
+}
