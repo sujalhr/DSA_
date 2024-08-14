@@ -1,0 +1,92 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+typedef struct node {
+    int cf, xex, yex, zex;
+    struct node *link;
+} NODE;
+
+NODE* insert(int n) {
+    NODE *head = malloc(sizeof(NODE)), *last = head;
+    head->link = head;
+    for (int i = 0; i < n; i++) {
+        NODE *nn = malloc(sizeof(NODE));
+        printf("Enter coefficient and exponents (x y z): ");
+        scanf("%d %d %d %d", &nn->cf, &nn->xex, &nn->yex, &nn->zex);
+        if (i == 0 || nn->xex > head->link->xex) {
+            nn->link = head->link;
+            head->link = nn;
+        } else {
+            nn->link = head;
+            last->link = nn;
+        }
+        last = nn;
+    }
+    return last;
+}
+
+void display(NODE* last) {
+    NODE* temp = last->link->link;
+    do {
+        printf("(%dx^%dy^%dz^%d)", temp->cf, temp->xex, temp->yex, temp->zex);
+        temp = temp->link;
+        if (temp != last->link->link) printf(" + ");
+    } while (temp != last->link->link);
+    printf("\n");
+}
+
+NODE* add(NODE *p1, NODE *p2) {
+    NODE *result = malloc(sizeof(NODE)), *last = result;
+    result->link = result;
+    NODE *a = p1->link->link, *b = p2->link->link;
+    while (a != p1->link || b != p2->link) {
+        NODE *nn = malloc(sizeof(NODE));
+        if (a->xex > b->xex || a == p1->link) {
+            *nn = *b;
+            b = b->link;
+        } else if (b->xex > a->xex || b == p2->link) {
+            *nn = *a;
+            a = a->link;
+        } else {
+            nn->cf = a->cf + b->cf;
+            nn->xex = a->xex; nn->yex = a->yex; nn->zex = a->zex;
+            a = a->link; b = b->link;
+        }
+        nn->link = result;
+        last->link = nn;
+        last = nn;
+    }
+    return last;
+}
+
+int eval(NODE *p, int x, int y, int z) {
+    int res = 0;
+    NODE *temp = p->link->link;
+    do {
+        res += temp->cf * pow(x, temp->xex) * pow(y, temp->yex) * pow(z, temp->zex);
+        temp = temp->link;
+    } while (temp != p->link->link);
+    return res;
+}
+
+int main() {
+    int n1, n2, x, y, z;
+    printf("Enter number of terms for first and second polynomial: ");
+    scanf("%d %d", &n1, &n2);
+    NODE *p1 = insert(n1), *p2 = insert(n2), *sum = add(p1, p2);
+    
+    printf("First polynomial: ");
+    display(p1);
+    printf("Second polynomial: ");
+    display(p2);
+    printf("Sum polynomial: ");
+    display(sum);
+    
+    printf("Enter x, y, z for evaluation: ");
+    scanf("%d %d %d", &x, &y, &z);
+    printf("Evaluation results: P1=%d, P2=%d, Sum=%d\n", 
+           eval(p1, x, y, z), eval(p2, x, y, z), eval(sum, x, y, z));
+    
+    return 0;
+}
