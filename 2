@@ -9,7 +9,8 @@ void replace(char *str, char *pat, char *rep) {
         for (k = 0; pat[k] && str[i + k] == pat[k]; k++);
         
         if (!pat[k]) {
-            for (k = 0; rep[k]; k++) res[j++] = rep[k];
+            for (k = 0; rep[k]; k++) 
+            res[j++] = rep[k];
             i += k;
             found = 1;
         } else {
