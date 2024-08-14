@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <math.h>
+
+#define MAX 100
+
+int stack[MAX], top = -1;
+
+void push(int x) { stack[++top] = x; }
+int pop() { return stack[top--]; }
+
+int evaluate(char *postfix) {
+    while (*postfix) {
+        if (isdigit(*postfix)) {
+            push(*postfix - '0');
+        } else {
+            int b = pop(), a = pop();
+            switch (*postfix) {
+                case '+': push(a + b); break;
+                case '-': push(a - b); break;
+                case '*': push(a * b); break;
+                case '/': push(a / b); break;
+                case '%': push(a % b); break;
+                case '^': push(pow(a, b)); break;
+            }
+        }
+        postfix++;
+    }
+    return pop();
+}
+
+void hanoi(int n, char from, char to, char aux) {
+    if (n == 1) {
+        printf("Move disk 1 from %c to %c\n", from, to);
+        return;
+    }
+    hanoi(n - 1, from, aux, to);
+    printf("Move disk %d from %c to %c\n", n, from, to);
+    hanoi(n - 1, aux, to, from);
+}
+
+int main() {
+    int choice;
+    do {
+        printf("\n1. Evaluate Postfix\n2. Tower of Hanoi\n3. Exit\nChoice: ");
+        scanf("%d", &choice);
+        switch (choice) {
+            case 1: {
+                char postfix[MAX];
+                printf("Enter postfix expression: ");
+                scanf("%s", postfix);
+                printf("Result: %d\n", evaluate(postfix));
+                break;
+            }
+            case 2: {
+                int n;
+                printf("Enter number of disks: ");
+                scanf("%d", &n);
+                hanoi(n, 'A', 'C', 'B');
+                break;
+            }
+            case 3: 
+                printf("Exiting...\n");
+                break;
+            default:
+                printf("Invalid choice\n");
+        }
+    } while (choice != 3);
+    return 0;
+}
