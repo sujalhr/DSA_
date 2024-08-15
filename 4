@@ -2,7 +2,7 @@
 #include <ctype.h>
 #include <string.h>
 
-char stack[25];
+char s[25];
 int top = -1;
 
 int precedence(char op) {
@@ -17,11 +17,11 @@ int precedence(char op) {
 }
 
 void push(char c) {
-    stack[++top] = c;
+    s[++top] = c;
 }
 
 char pop() {
-    return stack[top--];
+    return s[top--];
 }
 
 int main() {
@@ -37,14 +37,14 @@ int main() {
         } else if (infix[i] == '(') {
             push(infix[i]);
         } else if (infix[i] == ')') {
-            while (top != -1 && stack[top] != '(') {
+            while (top != -1 && s[top] != '(') {
                 postfix[j++] = pop();
             }
-            if (top != -1 && stack[top] == '(') {
+            if (top != -1 && s[top] == '(') {
                 pop();
             }
         } else {
-            while (top != -1 && precedence(stack[top]) >= precedence(infix[i])) {
+            while (top != -1 && precedence(s[top]) >= precedence(infix[i])) {
                 postfix[j++] = pop();
             }
             push(infix[i]);
