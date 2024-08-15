@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 typedef struct node {
-    int info;
+    int root;
     struct node *llink, *rlink;
 } NODE;
 
@@ -11,14 +11,14 @@ NODE *root = NULL;
 void inorder(NODE *ptr) {
     if (ptr) {
         inorder(ptr->llink);
-        printf("%d ", ptr->info);
+        printf("%d ", ptr->root);
         inorder(ptr->rlink);
     }
 }
 
 void preorder(NODE *ptr) {
     if (ptr) {
-        printf("%d ", ptr->info);
+        printf("%d ", ptr->root);
         preorder(ptr->llink);
         preorder(ptr->rlink);
     }
@@ -28,7 +28,7 @@ void postorder(NODE *ptr) {
     if (ptr) {
         postorder(ptr->llink);
         postorder(ptr->rlink);
-        printf("%d ", ptr->info);
+        printf("%d ", ptr->root);
     }
 }
 
@@ -39,20 +39,20 @@ void create() {
     for (i = 0; i < n; i++) {
         NODE *nn = malloc(sizeof(NODE)), *temp = root, *prev = NULL;
         printf("Enter node value: ");
-        scanf("%d", &nn->info);
+        scanf("%d", &nn->root);
         nn->llink = nn->rlink = NULL;
         while (temp) {
             prev = temp;
-            temp = (nn->info < temp->info) ? temp->llink : temp->rlink;
+            temp = (nn->root < temp->root) ? temp->llink : temp->rlink;
         }
         if (!prev) root = nn;
-        else *(nn->info < prev->info ? &prev->llink : &prev->rlink) = nn;
+        else *(nn->root < prev->root ? &prev->llink : &prev->rlink) = nn;
     }
 }
 
 NODE *search(NODE *root, int key) {
-    while (root && root->info != key)
-        root = (key < root->info) ? root->llink : root->rlink;
+    while (root && root->root != key)
+        root = (key < root->root) ? root->llink : root->rlink;
     return root;
 }
 
