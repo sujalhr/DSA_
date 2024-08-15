@@ -6,7 +6,7 @@ typedef struct node {
     struct node *llink, *rlink;
 } NODE;
 
-NODE *root = NULL;
+NODE *rootNode = NULL;
 
 void inorder(NODE *ptr) {
     if (ptr) {
@@ -37,23 +37,23 @@ void create() {
     printf("Enter number of nodes: ");
     scanf("%d", &n);
     for (i = 0; i < n; i++) {
-        NODE *nn = malloc(sizeof(NODE)), *temp = root, *prev = NULL;
-        printf("Enter node value: ");
+        NODE *nn = malloc(sizeof(NODE)), *temp = rootNode, *prev = NULL;
+        printf("Enter node root: ");
         scanf("%d", &nn->root);
         nn->llink = nn->rlink = NULL;
         while (temp) {
             prev = temp;
             temp = (nn->root < temp->root) ? temp->llink : temp->rlink;
         }
-        if (!prev) root = nn;
+        if (!prev) rootNode = nn;
         else *(nn->root < prev->root ? &prev->llink : &prev->rlink) = nn;
     }
 }
 
-NODE *search(NODE *root, int key) {
-    while (root && root->root != key)
-        root = (key < root->root) ? root->llink : root->rlink;
-    return root;
+NODE *search(NODE *rootNode, int key) {
+    while (rootNode && rootNode->root != key)
+        rootNode = (key < rootNode->root) ? rootNode->llink : rootNode->rlink;
+    return rootNode;
 }
 
 int main() {
@@ -63,13 +63,13 @@ int main() {
         scanf("%d", &ch);
         switch(ch) {
             case 1: create(); break;
-            case 2: inorder(root); break;
-            case 3: preorder(root); break;
-            case 4: postorder(root); break;
+            case 2: inorder(rootNode); break;
+            case 3: preorder(rootNode); break;
+            case 4: postorder(rootNode); break;
             case 5:
                 printf("Enter key to search: ");
                 scanf("%d", &key);
-                printf(search(root, key) ? "Key found\n" : "Key not found\n");
+                printf(search(rootNode, key) ? "Key found\n" : "Key not found\n");
                 break;
             case 6: break;
             default: printf("Invalid choice\n");
